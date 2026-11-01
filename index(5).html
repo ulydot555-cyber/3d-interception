@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D-перехват</title>
+<meta name="description" content="Интерактивное воспроизведение результатов улучшенной Python-модели трёхмерного перехвата.">
+<script src="https://cdn.plot.ly/plotly-3.3.1.min.js"></script>
+<style>
+:root{color-scheme:dark;--bg:#08111f;--panel:#101e31;--edge:#263b55;--muted:#9db0c8;--ink:#edf4ff;--blue:#68b1ff;--green:#5ee3c1;--orange:#ffbb75;--purple:#c3a5ff;--red:#ff7c8b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% -20%,#152f4f,transparent 50%),var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}.wrap{max-width:1510px;margin:auto;padding:24px 26px 30px}header{display:flex;justify-content:space-between;gap:22px;align-items:center;margin-bottom:18px}h1{font-size:28px;line-height:1.1;letter-spacing:-.04em;margin:4px 0 8px}h2{font-size:15px;margin:0;font-weight:700}.eyebrow{color:var(--green);font-size:11px;letter-spacing:.16em;font-weight:750}.sub{color:var(--muted);font-size:13px;max-width:740px}.flag{font-size:12px;color:#a7cfef;border:1px solid #34506a;border-radius:40px;padding:7px 12px;white-space:nowrap;background:#142a3f}.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:15px}.box{background:linear-gradient(135deg,rgba(22,38,60,.98),rgba(12,25,43,.98));border:1px solid var(--edge);border-radius:17px;overflow:hidden}.head{padding:16px 19px 8px;display:flex;justify-content:space-between;align-items:center;gap:12px}.head small{color:var(--muted)}#scene{height:520px;width:100%;touch-action:pan-y}#chart{height:250px;width:100%}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.segments{display:flex;gap:6px;background:#091a2d;padding:4px;border:1px solid #25415d;border-radius:11px}button{font:inherit;color:var(--ink);cursor:pointer;border:1px solid #30445f;background:#172a43;border-radius:9px;padding:9px 14px}button:hover{background:#253b56}button:disabled{opacity:.45;cursor:not-allowed}.segments button{border:0;background:transparent;font-size:12px;padding:6px 13px;color:#b4c3d6}.segments button.selected{color:#f2f7ff;background:#294967}.play{border-color:#2f7893;background:#12536d;min-width:85px;font-weight:700}.timeline{padding:15px 20px 18px;border-top:1px solid var(--edge)}.timelabels{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.tval{font-variant-numeric:tabular-nums;font-size:19px;font-weight:750}input[type=range]{width:100%;accent-color:var(--green);cursor:pointer}.controlrow{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:11px}.check{display:flex;align-items:center;gap:8px;color:#c3d2e3;font-size:12px}input[type=checkbox]{accent-color:#43cab0;cursor:pointer}select{background:#11263f;border:1px solid #35516e;border-radius:7px;padding:6px 8px;color:var(--ink)}.readout{padding:16px 20px;display:grid;gap:16px}.metricgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{border:1px solid #273e59;border-radius:12px;padding:10px 12px;background:#0b1b30}.metric .name{font-size:11px;color:#93a8c0}.metric .value{font-size:23px;font-weight:700;line-height:1.25;margin-top:3px;letter-spacing:-.035em;font-variant-numeric:tabular-nums}.stateline{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px}.tag{display:inline-flex;align-items:center;border-radius:25px;padding:4px 9px;font-size:11px;font-weight:700;background:#243c52;color:#bde3f5}.tag.good{background:#124636;color:#80edcc}.tag.warn{background:#5c3025;color:#ffc5a8}.tag.bad{background:#552631;color:#ffb1c0}.paneltitle{font-weight:740;font-size:13px;margin-bottom:10px}.breakdown{display:grid;gap:8px}.pair{display:flex;align-items:center;justify-content:space-between;color:#b8c9dd;gap:8px;font-size:12px}.pair b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:650}.progress{height:8px;border-radius:7px;background:#2c3e50;overflow:hidden}.fill{height:100%;background:var(--green);width:0%;transition:width .2s}.note{color:var(--muted);font-size:11px;line-height:1.6;border-top:1px solid var(--edge);padding-top:13px}.row2{display:grid;grid-template-columns:1fr 340px;gap:15px;margin-top:15px}.legend{display:flex;gap:15px;flex-wrap:wrap;font-size:11px;color:#b7c8db}.legend span:before{content:' ';display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}.lg-t:before{background:var(--orange)}.lg-p:before{background:var(--green)}.lg-d:before{background:var(--blue)}.lg-f:before{background:var(--red)}.help{padding:18px 20px;font-size:12px;color:#b3c5d9}.help p{margin:0 0 12px}.help b{color:#edf4ff}footer{padding:20px 2px 0;color:#7e98b4;font-size:11px}#loadError{margin:0 0 14px;padding:12px 15px;border:1px solid #7b3345;border-radius:12px;background:#3b1d2a;color:#ffd4dc}#loadError[hidden]{display:none}@media(max-width:990px){.layout,.row2{grid-template-columns:1fr}#scene{height:490px}header{align-items:flex-start}}@media(max-width:560px){.wrap{padding:13px}h1{font-size:23px}.topbar{flex-direction:column;align-items:stretch}.segments{justify-content:center}.head{flex-direction:column;align-items:start}#scene{height:390px}.row2{gap:12px}.controlrow{gap:10px}}
+
+.settings{margin:0 0 15px;border:1px solid var(--edge);border-radius:15px;background:linear-gradient(135deg,rgba(18,35,56,.96),rgba(10,24,41,.96));overflow:hidden}
+.settings>summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:750}
+.settings>summary::-webkit-details-marker{display:none}
+.settings>summary:after{content:'＋';color:var(--green);font-size:18px}
+.settings[open]>summary:after{content:'−'}
+.settings-summary{color:var(--muted);font-size:11px;font-weight:500}
+.settings-body{padding:0 16px 16px;border-top:1px solid var(--edge)}
+.settings-note{margin:13px 0;padding:11px 13px;border:1px solid #36506a;border-radius:10px;background:#102a40;color:#c2d5e8;font-size:12px;line-height:1.55}
+.settings-note b{color:#eaf4ff}
+.param-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.param-group{min-width:0;border:1px solid #263e59;border-radius:12px;padding:13px;background:rgba(8,22,39,.52)}
+.param-group h3{font-size:12px;margin:0 0 11px;color:#e5f0ff}
+.param-group h3 small{display:block;color:var(--muted);font-weight:450;margin-top:3px}
+.param-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px}
+.param-control{display:grid;gap:5px;min-width:0;color:#b9cadd;font-size:11px}
+.param-control span{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.param-control output{color:var(--green);font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.param-control input[type=number]{width:100%;min-width:0;padding:7px 8px;color:var(--ink);background:#0b1b30;border:1px solid #35516e;border-radius:7px;font:inherit;font-size:12px}
+.param-control input[type=range]{margin:3px 0 0;accent-color:var(--green)}
+.param-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:13px}
+.param-actions button{font-size:12px;padding:8px 12px}
+.param-actions .primary{background:#12536d;border-color:#2f7893}
+#settingsFeedback{font-size:11px;color:var(--muted);flex:1 1 260px}
+.settings-footnote{margin:10px 0 0;color:#91a8c2;font-size:11px;line-height:1.55}
+@media(max-width:990px){.param-columns{grid-template-columns:1fr}}
+@media(max-width:560px){.settings>summary{align-items:flex-start}.settings-summary{max-width:55%;text-align:right}.settings-body{padding:0 10px 12px}.param-inputs{grid-template-columns:1fr 1fr}.param-group{padding:10px}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div><div class="eyebrow">3D ПЕРЕХВАТ</div><h1>Траектория, обзор камеры и встреча</h1><p class="sub"></p></div>
+ <div class="flag" id="dataStatus">Загрузка актуальных данных…</div>
+</header>
+<div id="loadError" hidden role="alert"></div>
+<div class="topbar">
+ <div class="segments" aria-label="Тип траектории"><button id="straightBtn" class="selected" type="button">Прямая</button><button id="curveBtn" type="button">Кривая</button></div>
+ <div class="legend"><span class="lg-t">Цель</span><span class="lg-p">Преследователь</span><span class="lg-d">Камера</span><span class="lg-f">Неуспешные примеры</span></div>
+</div>
+<div class="layout">
+ <section class="box">
+  <div class="head"><h2>Трёхмерная сцена</h2><small>Потяните мышью для поворота · колесо — масштаб</small></div>
+  <div id="scene" role="img" aria-label="Интерактивная трёхмерная сцена движения"></div>
+  <div class="timeline">
+   <div class="timelabels"><div><div class="eyebrow" style="letter-spacing:.07em">Время от обнаружения</div><div class="tval" id="clock">0,00 с</div></div><button type="button" class="play" id="play">▶ Пуск</button></div>
+   <input type="range" id="time" min="0" max="1" step="0.01" value="0" aria-label="Перемотка времени">
+   <div class="controlrow">
+    <label class="check"><input type="checkbox" id="showCamera" checked> Зона обзора</label>
+    <label class="check"><input type="checkbox" id="showTrials"> <span id="trialToggleLabel">Примеры испытаний</span></label>
+    <label class="check">Скорость воспроизведения <select id="speed"><option value="0.5">×0,5</option><option value="1" selected>×1</option><option value="2">×2</option><option value="4">×4</option></select></label>
+   </div>
+  </div>
+ </section>
+ <aside class="box readout">
+  <div><div class="stateline"><span class="paneltitle" style="margin:0">Состояние движения</span><span class="tag" id="phase">Обнаружение</span></div><div id="visibility" class="tag good">Цель в поле зрения</div></div>
+  <div class="metricgrid">
+   <div class="metric"><div class="name">Расстояние до цели</div><div class="value" id="distance">—</div></div>
+   <div class="metric"><div class="name">Скорость преследователя</div><div class="value" id="speedNow">—</div></div>
+   <div class="metric"><div class="name">Время захвата</div><div class="value" id="captureTime">—</div></div>
+   <div class="metric"><div class="name">Успешность</div><div class="value" id="successPct">—</div></div>
+  </div>
+  <div><div class="paneltitle">Выбранный курс</div><div class="breakdown">
+   <div class="pair"><span>Стратегия</span><b id="currentChoice">—</b></div>
+   <div class="pair"><span>Длина пути</span><b id="pathLength">—</b></div>
+   <div class="pair"><span>Расчётная предельная скорость</span><b id="vmax">—</b></div>
+   <div class="pair"><span>Радиус захвата</span><b id="capRadius">—</b></div>
+   <div class="pair"><span>Потери обзора / восстановлено</span><b id="lossCount">—</b></div>
+  </div></div>
+  <div><div class="paneltitle" id="trialCountTitle">Успешность в испытаниях</div><div class="progress"><div id="fill" class="fill"></div></div><div class="pair" style="margin-top:8px"><span id="reliabilityHint">Требуемый порог: —</span><b id="comparison">—</b></div><div class="pair" style="margin-top:6px"><span>Успешные случаи</span><b id="successCount">—</b></div></div>
+  <p class="note">Процент рассчитывается по полной статистической серии. Переключатель «Примеры испытаний» показывает только часть точек для наглядности.</p>
+ </aside>
+</div>
+
+</div>
+<script>
+(async function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const status=$('dataStatus');
+ let model;
+ try{
+  if(typeof Plotly==='undefined') throw new Error('Не загрузилась библиотека Plotly');
+  const u=new URL('./data.json',window.location.href);u.searchParams.set('v',String(Date.now()));
+  const response=await fetch(u.toString(),{cache:'no-store'});
+  if(!response.ok) throw new Error('HTTP '+response.status);
+  model=await response.json();
+  if(!model.params||!model.straight||!Array.isArray(model.straight.time)||!model.straight.pursuer||!model.straight.target) throw new Error('Структура data.json не соответствует формату визуализации');
+  status.textContent='Актуальный JSON · цель '+Number(model.params.targetSpeed).toFixed(2).replace('.',',')+' м/с · '+model.params.reliabilityTrials+' испытаний';
+ }catch(err){
+  status.textContent='Ошибка загрузки данных';status.classList.add('bad');
+  $('loadError').hidden=false;$('loadError').textContent='Не удалось загрузить актуальный data.json: '+err.message+'. Проверьте, что index.html и data.json находятся в корне репозитория и опубликованы одной версией. Старые встроенные результаты не используются.';
+  console.error(err);return;
+ }
+ const P=model.params;
+ const routes={straight:model.straight,curve:model.curve};
+ if(!routes.curve){$('curveBtn').disabled=true;}
+ const truePos=P.trueTargetAtDetection||P.targetAtDetection;
+ const trueVel=P.trueTargetVelocity||P.targetVelocity;
+ const defaults={
+  cameraRange:Number(P.cameraRange),cameraHFov:Number(P.cameraHFov),cameraVFov:Number(P.cameraVFov),
+  rollAmp:Number(P.rollAmp||0),pitchAmp:Number(P.pitchAmp||0),rollFrequency:Number(P.rollFrequency||0),pitchFrequency:Number(P.pitchFrequency||0),
+  targetBeforeX:Number((truePos[0]-P.detectionTime*trueVel[0]).toFixed(1)),targetBeforeY:Number((truePos[1]-P.detectionTime*trueVel[1]).toFixed(1)),targetBeforeZ:Number((truePos[2]-P.detectionTime*trueVel[2]).toFixed(1)),
+  targetVx:Number(trueVel[0]),targetVy:Number(trueVel[1]),targetVz:Number(trueVel[2]),
+  pursuerSpeedMax:Number(P.pursuerSpeedMax),speedReservePercent:Number(((1-P.pursuerSpeedActual/P.pursuerSpeedMax)*100).toFixed(1)),
+  accelerationMax:Number(P.accelerationMax),maxTurnRate:Number(P.maxTurnRate),captureRadius:Number(P.captureRadius),
+  measureTime:Number(P.measureTime),measurementSamples:Number(P.measurementSamples),positionMeasurementStd:Number(P.positionMeasurementStd),
+  processTime:Number(P.processTime),reactionTime:Number(P.reactionTime),uncertaintyPositionStd:0,
+  uncertaintyVelocityStd:Number(P.uncertaintyVelocityStd||0),maxBlackout:Number(P.maxBlackout),
+  reliabilityTrials:Number(P.reliabilityTrials),requiredReliability:Number(P.requiredReliability)
+ };
+ const settings={...defaults};
+ const liveCameraKeys=new Set(['cameraRange','cameraHFov','cameraVFov','rollAmp','pitchAmp','rollFrequency','pitchFrequency']);
+ function syncSettingsInputs(){
+  document.querySelectorAll('[data-param]').forEach(input=>{
+   const key=input.dataset.param;input.value=settings[key];
+   const output=$('out-'+key);if(output)output.textContent=fmt(settings[key],key.toLowerCase().includes('frequency')||key.toLowerCase().includes('amp')?2:0)+(key==='cameraRange'?' м':key.includes('Fov')||key.toLowerCase().includes('amp')?'°':key.toLowerCase().includes('frequency')?' Гц':'');
+  });
+ }
+ const fmt=(v,d=2)=>Number(v).toFixed(d).replace('.',',');
+ syncSettingsInputs();
+ let which=model.bestKind==='Кривая'&&routes.curve?'curve':'straight';
+ let t=0,playing=false,lastTs=0,raf=0,cameraEnabled=true,trialsEnabled=false,sceneReady=false,chartReady=false;
+ const C={ink:'#afc2d9',cyan:'#5ee3c1',orange:'#ffbb75',purple:'#c3a5ff',blue:'#68b1ff',red:'#ff7c8b'};
+ const route=()=>routes[which];
+ function interp(r,time){
+  const a=r.time,n=a.length;let lo=0,hi=n-1;
+  while(lo<hi){const m=(lo+hi)>>1;if(a[m]<time)lo=m+1;else hi=m;}
+  const i=Math.max(0,Math.min(n-2,lo-1));const span=a[i+1]-a[i]||1;const w=Math.max(0,Math.min(1,(time-a[i])/span));
+  const mix=(x,y)=>x+(y-x)*w;const vec=(arr)=>arr[i].map((v,j)=>mix(v,arr[i+1][j]));
+  return {p:vec(r.pursuer),c:vec(r.target),d:mix(r.distance[i],r.distance[i+1]),visible:(w<.5?r.visible[i]:r.visible[i+1])===1,index:i};
+ }
+ function cameraGeometry(pos,time){
+  const f=Math.max(0,time-P.launchDelay),rad=Math.PI/180;
+  const roll=(settings.rollAmp||0)*rad*Math.sin(2*Math.PI*(settings.rollFrequency||0)*f);
+  const pitch=(settings.pitchAmp||0)*rad*Math.sin(2*Math.PI*(settings.pitchFrequency||0)*f);
+  const rotate=v=>{const [x,y,z]=v;const y1=Math.cos(roll)*y-Math.sin(roll)*z,z1=Math.sin(roll)*y+Math.cos(roll)*z;return [Math.cos(pitch)*x+Math.sin(pitch)*z1,y1,-Math.sin(pitch)*x+Math.cos(pitch)*z1];};
+  const corners=[];for(const sx of [-1,1])for(const sy of [-1,1]){const q=[sx*Math.tan(settings.cameraHFov*rad/2),sy*Math.tan(settings.cameraVFov*rad/2),1];const k=(settings.cameraRange*.65)/Math.hypot(...q);corners.push(rotate(q.map(x=>x*k)).map((x,j)=>x+pos[j]));}
+  const order=[0,1,3,2],ring=order.map(i=>corners[i]);
+  const edgePoints=[...ring,ring[0]],edgeX=edgePoints.map(p=>p[0]),edgeY=edgePoints.map(p=>p[1]),edgeZ=edgePoints.map(p=>p[2]);
+  const rayX=[],rayY=[],rayZ=[];for(const q of corners){rayX.push(pos[0],q[0],null);rayY.push(pos[1],q[1],null);rayZ.push(pos[2],q[2],null);}
+  const meshPoints=[pos,...ring];
+  return {
+   corners,edgeX,edgeY,edgeZ,rayX,rayY,rayZ,
+   meshX:meshPoints.map(p=>p[0]),meshY:meshPoints.map(p=>p[1]),meshZ:meshPoints.map(p=>p[2]),
+   meshI:[0,0,0,0,1,1],meshJ:[1,2,3,4,2,3],meshK:[2,3,4,1,3,4]
+  };
+ }
+ function getSceneBounds(){
+  const pts=[[0,0,0]];
+  for(const r of [routes.straight,routes.curve].filter(Boolean)){
+   pts.push(...r.target,...r.pursuer);
+   for(let i=0;i<r.time.length;i++){
+    const cam=cameraGeometry(r.pursuer[i],r.time[i]);pts.push(...cam.corners);
+   }
+  }
+  const lo=[0,1,2].map(j=>Math.min(...pts.map(p=>p[j]))),hi=[0,1,2].map(j=>Math.max(...pts.map(p=>p[j])));
+  return lo.map((v,j)=>{const pad=Math.max(4,(hi[j]-v)*.06);return [v-pad,hi[j]+pad];});
+ }
+ function updateSceneBounds(){
+  if(!sceneReady)return;
+  const b=getSceneBounds();
+  Plotly.relayout('scene',{'scene.xaxis.range':b[0],'scene.yaxis.range':b[1],'scene.zaxis.range':b[2]});
+ }
+ const line3=(name,pts,color,width,dash='solid')=>({type:'scatter3d',mode:'lines',name,x:pts.map(p=>p[0]),y:pts.map(p=>p[1]),z:pts.map(p=>p[2]),line:{color,width,dash},hoverinfo:'skip'});
+ const emptyLine=(name,color,width=2)=>({type:'scatter3d',mode:'lines',name,x:[],y:[],z:[],line:{color,width},hoverinfo:'skip'});
+ const mark=(name,color,size)=>({type:'scatter3d',mode:'markers',name,x:[],y:[],z:[],marker:{color,size},hoverinfo:'skip'});
+ const initialBounds=getSceneBounds();
+ const initialPose=interp(route(),0),initialCamera=cameraGeometry(initialPose.p,0);
+ const traces=[
+  line3('Цель',model.straight.target,C.orange,4,'dash'),
+  line3('Прямая',model.straight.pursuer,C.purple,3,'dot'),
+  model.curve?line3('Кривая',model.curve.pursuer,C.cyan,3,'dash'):emptyLine('Кривая',C.cyan,3),
+  emptyLine('Пройденный путь',C.cyan,6),mark('Цель сейчас',C.orange,7),mark('Преследователь сейчас',C.cyan,7),emptyLine('Линия визирования','#a9ddff',2),
+  {type:'mesh3d',x:initialCamera.meshX,y:initialCamera.meshY,z:initialCamera.meshZ,i:initialCamera.meshI,j:initialCamera.meshJ,k:initialCamera.meshK,color:'#579fff',opacity:.15,flatshading:true,lighting:{ambient:.9,diffuse:.35,specular:.08,roughness:.9},showscale:false,name:'Объём обзора камеры',hoverinfo:'skip'},
+  emptyLine('Лучевые границы камеры',C.blue,1.5),emptyLine('Контур камеры',C.blue,2.5),
+  {type:'scatter3d',mode:'markers',x:[],y:[],z:[],marker:{size:3,color:C.cyan,opacity:.55},name:'Успешные примеры',hoverinfo:'skip'},
+  {type:'scatter3d',mode:'markers',x:[],y:[],z:[],marker:{size:3,color:C.red,opacity:.55},name:'Неуспешные примеры',hoverinfo:'skip'}
+ ];
+ const sceneLayout={paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{color:C.ink,size:11},margin:{l:0,r:0,t:0,b:0},showlegend:false,uirevision:'fixed',scene:{bgcolor:'rgba(0,0,0,0)',aspectmode:'data',xaxis:{title:'X, м',range:initialBounds[0],gridcolor:'#31445b',zerolinecolor:'#35536b'},yaxis:{title:'Y, м',range:initialBounds[1],gridcolor:'#31445b',zerolinecolor:'#35536b'},zaxis:{title:'Z, м',range:initialBounds[2],gridcolor:'#31445b',zerolinecolor:'#35536b'},camera:{eye:{x:1.45,y:-1.8,z:1.0},up:{x:0,y:0,z:1}}}};
+ const chartLayout={paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{color:C.ink,size:11},margin:{l:50,r:52,t:8,b:38},xaxis:{title:'Время от обнаружения, с',gridcolor:'#263c54',zeroline:false},yaxis:{title:'Расстояние, м',gridcolor:'#263c54',zeroline:false},yaxis2:{title:'Видимость',overlaying:'y',side:'right',range:[-.1,1.1],tickvals:[0,1],showgrid:false},showlegend:false};
+ const chartTraces=[{type:'scatter',mode:'lines',x:[],y:[],line:{color:C.cyan,width:3},name:'Расстояние'},{type:'scatter',mode:'lines',x:[],y:[],line:{color:C.blue,width:1.5,shape:'hv'},yaxis:'y2',name:'Видимость'},{type:'scatter',mode:'lines',x:[0,0],y:[0,1],line:{color:C.orange,dash:'dot',width:1.3},hoverinfo:'skip'}];
+ function updateTrials(){const o=route().outcomes||[],yes=trialsEnabled?o.filter(x=>x.success).map(x=>x.goal):[],no=trialsEnabled?o.filter(x=>!x.success).map(x=>x.goal):[];Plotly.restyle('scene',{x:[yes.map(p=>p[0]),no.map(p=>p[0])],y:[yes.map(p=>p[1]),no.map(p=>p[1])],z:[yes.map(p=>p[2]),no.map(p=>p[2])]},[10,11]);}
+ function updateScene(){
+  if(!sceneReady)return;
+  const r=route(),q=interp(r,t),cam=cameraGeometry(q.p,t),trail=r.pursuer.slice(0,q.index+1);trail.push(q.p);
+  Plotly.restyle('scene',{x:[trail.map(p=>p[0]),[q.c[0]],[q.p[0]],[q.p[0],q.c[0]],cam.rayX,cam.edgeX],y:[trail.map(p=>p[1]),[q.c[1]],[q.p[1]],[q.p[1],q.c[1]],cam.rayY,cam.edgeY],z:[trail.map(p=>p[2]),[q.c[2]],[q.p[2]],[q.p[2],q.c[2]],cam.rayZ,cam.edgeZ]},[3,4,5,6,8,9]);
+  Plotly.restyle('scene',{x:[cam.meshX],y:[cam.meshY],z:[cam.meshZ]},[7]);
+  Plotly.restyle('scene',{visible:cameraEnabled},[7,8,9]);
+ }
+ function updateMetrics(){const r=route(),q=interp(r,t),elapsed=Math.max(0,t-P.launchDelay),v=Math.min((r.acceleration||P.accelerationMax)*elapsed,P.pursuerSpeedActual);$('clock').textContent=fmt(t)+' с';$('distance').textContent=fmt(q.d)+' м';$('speedNow').textContent=fmt(v)+' м/с';let phase='Обнаружение';if(t>0&&t<=P.measureTime)phase='Измерение';else if(t>P.measureTime&&t<=P.measureTime+P.processTime)phase='Обработка';else if(t>P.measureTime+P.processTime&&t<=P.launchDelay)phase='Реакция';else if(t>P.launchDelay&&t<r.captureTime)phase='Полёт';else if(t>=r.captureTime)phase='Захват';$('phase').textContent=phase;$('visibility').className='tag '+(q.visible?'good':'bad');$('visibility').textContent=q.visible?'Цель в поле зрения':'Цель не видна';}
+ function render(){const r=route();$('time').value=t.toFixed(3);updateMetrics();updateScene();if(chartReady)Plotly.restyle('chart',{x:[[t,t]],y:[[0,Math.max(...r.distance)]]},[2]);}
+ function updateRoute(){const r=route();$('straightBtn').classList.toggle('selected',which==='straight');$('curveBtn').classList.toggle('selected',which==='curve');$('time').max=r.captureTime;$('captureTime').textContent=fmt(r.captureTime,3)+' с';$('successPct').textContent=fmt(r.reliability,2)+'%';$('pathLength').textContent=fmt(r.length)+' м';$('currentChoice').textContent=(model.bestKind===r.kind?'Выбрана: ':'Альтернатива: ')+r.kind;$('vmax').textContent=fmt(P.pursuerSpeedActual)+' м/с';$('capRadius').textContent=fmt(P.captureRadius)+' м';$('lossCount').textContent=(r.blackoutCount??0)+' / '+(r.recovered??0);$('fill').style.width=r.reliability+'%';const total=Number(P.reliabilityTrials||r.outcomes?.length||0),success=Math.round(r.reliability*total/100),samples=Number(P.visualizedTrials||r.outcomes?.length||0);$('trialCountTitle').textContent='Успешность в '+total.toLocaleString('ru-RU')+' испытаниях';$('trialToggleLabel').textContent='Примеры ('+samples.toLocaleString('ru-RU')+')';$('successCount').textContent=success.toLocaleString('ru-RU')+' из '+total.toLocaleString('ru-RU');$('reliabilityHint').textContent='Требуемый порог: '+fmt(P.requiredReliability,0)+'%';$('comparison').textContent=r.reliability>=P.requiredReliability?'Порог выполнен':'Порог не достигнут';$('comparison').style.color=r.reliability>=P.requiredReliability?C.cyan:C.red;Plotly.restyle('scene',{x:[r.target.map(p=>p[0])],y:[r.target.map(p=>p[1])],z:[r.target.map(p=>p[2])]},[0]);Plotly.restyle('chart',{x:[r.time,r.time],y:[r.distance,r.visible]},[0,1]);Plotly.relayout('chart',{'xaxis.range':[0,r.captureTime+.1]});updateTrials();t=Math.min(t,r.captureTime);render();}
+ function stop(){playing=false;lastTs=0;cancelAnimationFrame(raf);$('play').textContent='▶ Пуск';}
+ function animate(stamp){if(!playing)return;if(!lastTs)lastTs=stamp;const dt=Math.min(.12,(stamp-lastTs)/1000);lastTs=stamp;if(t>=route().captureTime-.0001){stop();return;}t=Math.min(route().captureTime,t+dt*Number($('speed').value));render();raf=requestAnimationFrame(animate);}
+ $('play').addEventListener('click',()=>{if(playing){stop();return;}if(t>=route().captureTime-.005)t=0;playing=true;$('play').textContent='❚❚ Пауза';raf=requestAnimationFrame(animate);});
+ $('time').addEventListener('input',e=>{stop();t=Number(e.target.value);render();});$('showCamera').addEventListener('change',e=>{cameraEnabled=e.target.checked;updateScene();});$('showTrials').addEventListener('change',e=>{trialsEnabled=e.target.checked;updateTrials();});
+ document.querySelectorAll('[data-param]').forEach(input=>input.addEventListener('input',()=>{
+  const key=input.dataset.param,value=Number(input.value);if(!Number.isFinite(value))return;settings[key]=value;
+  const output=$('out-'+key);if(output){const digits=key.toLowerCase().includes('frequency')||key.toLowerCase().includes('amp')?2:0;const suffix=key==='cameraRange'?' м':key.includes('Fov')||key.toLowerCase().includes('amp')?'°':key.toLowerCase().includes('frequency')?' Гц':'';output.textContent=fmt(value,digits)+suffix;}
+  if(liveCameraKeys.has(key)){updateSceneBounds();updateScene();$('settingsFeedback').textContent='Область камеры обновлена. Траектории и статистика пока остаются исходными.';}
+  else $('settingsFeedback').textContent='Параметры для следующего расчёта изменены. Скопируйте их в Colab и повторно запустите Python-модель.';
+ }));
+ $('resetSettings').addEventListener('click',()=>{Object.assign(settings,defaults);syncSettingsInputs();updateSceneBounds();updateScene();$('settingsFeedback').textContent='Исходные значения восстановлены.';});
+ $('copySettings').addEventListener('click',async()=>{
+  const n=v=>Number(v).toString();
+  const vec=(a,b,c)=>`(${n(a)}, ${n(b)}, ${n(c)})`;
+  const lines=[
+   '# Параметры, скопированные с сайта 3D-перехвата',
+   `CAM_RANGE_M = ${n(settings.cameraRange)}`,
+   `CAM_H_FOV_DEG = ${n(settings.cameraHFov)}`,
+   `CAM_V_FOV_DEG = ${n(settings.cameraVFov)}`,
+   `PURSUER_START_XYZ = (0.0, 0.0, 0.0)`,
+   `TARGET_BEFORE_DETECTION_XYZ = ${vec(settings.targetBeforeX,settings.targetBeforeY,settings.targetBeforeZ)}`,
+   `TARGET_VELOCITY_XYZ = ${vec(settings.targetVx,settings.targetVy,settings.targetVz)}`,
+   `PURSUER_MAX_SPEED_M_S = ${n(settings.pursuerSpeedMax)}`,
+   `SPEED_RESERVE_PERCENT = ${n(settings.speedReservePercent)}`,
+   `MAX_TOTAL_ACCEL_M_S2 = ${n(settings.accelerationMax)}`,
+   `MAX_TURN_RATE_DEG_S = ${n(settings.maxTurnRate)}`,
+   `CAPTURE_RADIUS_M = ${n(settings.captureRadius)}`,
+   `MEASUREMENT_TIME_S = ${n(settings.measureTime)}`,
+   `MEASUREMENT_SAMPLES = ${Math.round(settings.measurementSamples)}`,
+   `POSITION_MEASUREMENT_STD_M = ${n(settings.positionMeasurementStd)}`,
+   `PROCESSING_TIME_S = ${n(settings.processTime)}`,
+   `REACTION_TIME_S = ${n(settings.reactionTime)}`,
+   `UNCERTAINTY_POSITION_STD_M = ${n(settings.uncertaintyPositionStd)}`,
+   `UNCERTAINTY_VELOCITY_STD_M_S = ${n(settings.uncertaintyVelocityStd)}`,
+   `RELIABILITY_TRIALS = ${Math.round(settings.reliabilityTrials)}`,
+   `REQUIRED_SUCCESS_FRACTION = ${n(settings.requiredReliability/100)}`,
+   `MAX_BLACKOUT_DURATION_S = ${n(settings.maxBlackout)}`,
+   `ROLL_AMPLITUDE_DEG = ${n(settings.rollAmp)}`,
+   `PITCH_AMPLITUDE_DEG = ${n(settings.pitchAmp)}`,
+   `ROLL_FREQUENCY_HZ = ${n(settings.rollFrequency)}`,
+   `PITCH_FREQUENCY_HZ = ${n(settings.pitchFrequency)}`
+  ].join('\n');
+  try{
+   if(navigator.clipboard&&navigator.clipboard.writeText)await navigator.clipboard.writeText(lines);
+   else{const area=document.createElement('textarea');area.value=lines;document.body.appendChild(area);area.select();const ok=document.execCommand('copy');area.remove();if(!ok)throw new Error('Копирование не поддерживается браузером');}
+   $('settingsFeedback').textContent='Блок параметров скопирован. Вставьте его в раздел констант Colab/model.py.';
+  }catch(err){$('settingsFeedback').textContent='Не удалось скопировать автоматически: '+err.message;}
+ });
+ $('straightBtn').addEventListener('click',()=>{stop();which='straight';updateRoute();});$('curveBtn').addEventListener('click',()=>{if(!routes.curve)return;stop();which='curve';updateRoute();});
+ await Plotly.newPlot('scene',traces,sceneLayout,{responsive:true,displaylogo:false,modeBarButtonsToRemove:['toImage','lasso3d','select3d']});sceneReady=true;
+ await Plotly.newPlot('chart',chartTraces,chartLayout,{responsive:true,displaylogo:false});chartReady=true;updateRoute();
+})();
+</script>
+</body>
+</html>
